@@ -10,13 +10,18 @@ public class Enemy : Entity
     public enum State { IDLE, CHASING, ATTACKING };
     State currentState;
 
-    [SerializeField]
-    bool hasTarget;
+    bool detected;
 
     float myCollisionRadius;
     float targetCollisionRadius;
+    [SerializeField]
+    float maxDetectionRange;
+    [SerializeField]
+    float loseSightDistance;
 
     NavMeshAgent pathFinder;
+
+    [SerializeField]
     GameObject target;
 
     void Awake()
@@ -26,21 +31,48 @@ public class Enemy : Entity
 
         if (GameObject.FindGameObjectWithTag("Player") != null)
         {
-            hasTarget = true;
             target = GameObject.FindGameObjectWithTag("Player").gameObject;
-            myCollisionRadius = GetComponent<CapsuleCollider>().radius;
-            targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
+            StartCoroutine(UpdatePath());
         }
+
+        myCollisionRadius = GetComponent<CapsuleCollider>().radius;
+        targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
+        maxDetectionRange = 30f;
+
     }
 
     protected override void Start()
     {
         base.Start();
-        if (hasTarget)
+        StartCoroutine(UpdatePath());
+    }
+
+    void Update()
+    {
+        if (!detected && IsWithinDetectionRange())
         {
-            currentState = State.CHASING;
             StartCoroutine(UpdatePath());
         }
+    }
+
+    bool IsWithinDetectionRange()
+    {
+        Vector3 directionToTarget = target.transform.position - transform.position;
+
+        if (directionToTarget.sqrMagnitude <= maxDetectionRange)
+        {
+            detected = true;
+            currentState = State.CHASING;
+
+            return true;
+        }
+        else if (directionToTarget.sqrMagnitude < loseSightDistance)
+        {
+            detected = false;
+            currentState = State.IDLE;
+        }
+
+        return false;
     }
 
     public void SetCharacteristics(float moveSpeed)
@@ -51,7 +83,7 @@ public class Enemy : Entity
     IEnumerator UpdatePath()
     {
         float refreshRate = .25f;
-        while (hasTarget)
+        while (detected)
         {
             if (currentState == State.CHASING)
             {
@@ -62,6 +94,10 @@ public class Enemy : Entity
                 {
                     pathFinder.SetDestination(targetPosition);
                 }
+            }
+            else
+            {
+                currentState = State.IDLE;
             }
             yield return new WaitForSeconds(refreshRate);
         }
