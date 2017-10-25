@@ -97,8 +97,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 10
+  validTargetMask:
+    serializedVersion: 2
+    m_Bits: 256
+  validObstacleMask:
+    serializedVersion: 2
+    m_Bits: 512
   maxDetectionRange: 10
-  loseSightDistance: 0
   target: {fileID: 0}
 --- !u!136 &136099952813943652
 CapsuleCollider:

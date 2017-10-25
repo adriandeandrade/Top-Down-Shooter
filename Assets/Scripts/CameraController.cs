@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
     {
         if(target != null)
         {
-            target = FindObjectOfType<Player>().gameObject;
+            target = FindObjectOfType<PlayerMotor>().gameObject;
         }
     }
 
