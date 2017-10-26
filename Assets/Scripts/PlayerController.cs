@@ -59,6 +59,19 @@ public class PlayerController : Entity
             gunController.Reload();
         }
 
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            gunController.SelectPistol();
+        }
 
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            gunController.SelectShotgun();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            gunController.SelectRifle();
+        }
     }
 }

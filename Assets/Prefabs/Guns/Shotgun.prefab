@@ -188,7 +188,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1844745248930684}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.050562, y: -0.066, z: 0.454}
+  m_LocalPosition: {x: -0.050562, y: 0.458, z: 0.454}
   m_LocalScale: {x: 4.2, y: 4.2, z: 4.2}
   m_Children:
   - {fileID: 4247133384373472}
@@ -397,9 +397,11 @@ MonoBehaviour:
   muzzleVelocity: 40
   bulletsPerMagazine: 2
   reloadTime: 0.6
+  damage: 9
   fireMode: 1
-  muzzle: {fileID: 4735239278935914}
+  muzzles:
+  - {fileID: 4735239278935914}
+  - {fileID: 4009481761228930}
   projectile: {fileID: 114457783727416942, guid: d1a8c5afdca8e66419a5c7fd3d6e4f4a,
     type: 2}
   bulletsLeftInMagazine: 0
-  damage: 14

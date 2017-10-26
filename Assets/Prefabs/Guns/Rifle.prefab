@@ -453,7 +453,10 @@ MonoBehaviour:
   muzzleVelocity: 45
   bulletsPerMagazine: 30
   reloadTime: 0.5
-  muzzle: {fileID: 4606361074847904}
+  damage: 11
+  fireMode: 0
+  muzzles:
+  - {fileID: 4606361074847904}
   projectile: {fileID: 114457783727416942, guid: d1a8c5afdca8e66419a5c7fd3d6e4f4a,
     type: 2}
-  damage: 11
+  bulletsLeftInMagazine: 0

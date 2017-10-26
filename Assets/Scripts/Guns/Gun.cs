@@ -10,15 +10,16 @@ public class Gun : MonoBehaviour
     public float muzzleVelocity = 35f;
     public int bulletsPerMagazine;
     public float reloadTime;
+    public int damage;
     public enum FireMode { Auto, Single };
     public FireMode fireMode;
 
     [Space]
 
     [Header("Other")]
-    public Transform muzzle;
+    public Transform[] muzzles;
     public Projectile projectile;
-    
+
     float nextShotTime;
     [SerializeField]
     int bulletsLeftInMagazine;
@@ -26,11 +27,9 @@ public class Gun : MonoBehaviour
 
     bool triggerReleasedSinceLastShot;
 
-    public float damage = 10f;
-
     private void LateUpdate()
     {
-        if(!isReloading && bulletsLeftInMagazine == 0)
+        if (!isReloading && bulletsLeftInMagazine == 0)
         {
             Reload();
         }
@@ -38,27 +37,36 @@ public class Gun : MonoBehaviour
 
     public void Shoot()
     {
-        if(!isReloading && Time.time > nextShotTime && bulletsLeftInMagazine > 0)
+        if (!isReloading && Time.time > nextShotTime && bulletsLeftInMagazine > 0)
         {
-            if(fireMode == FireMode.Single)
+            if (fireMode == FireMode.Single)
             {
-                if(!triggerReleasedSinceLastShot)
+                if (!triggerReleasedSinceLastShot)
                 {
                     return;
                 }
             }
 
-            bulletsLeftInMagazine--;
-            nextShotTime = Time.time + rateOfFire / 1000;
-            Projectile newProjectile = Instantiate(projectile, muzzle.position, muzzle.rotation) as Projectile;
-            newProjectile.SetProjectileSpeed(muzzleVelocity);
-            Destroy(newProjectile.gameObject, 5f);
+            for (int i = 0; i < muzzles.Length; i++)
+            {
+                if (bulletsLeftInMagazine == 0)
+                {
+                    break;
+                }
+
+                bulletsLeftInMagazine--;
+                nextShotTime = Time.time + rateOfFire / 1000;
+                Projectile newProjectile = Instantiate(projectile, muzzles[i].position, muzzles[i].rotation) as Projectile;
+                newProjectile.SetProjectileSpeed(muzzleVelocity);
+                newProjectile.SetProjectileDamage(damage);
+                Destroy(newProjectile.gameObject, 5f);
+            }
         }
     }
 
     public void Reload()
     {
-        if(!isReloading && bulletsLeftInMagazine != bulletsPerMagazine)
+        if (!isReloading && bulletsLeftInMagazine != bulletsPerMagazine)
         {
             StartCoroutine(ReloadGun());
         }
@@ -71,7 +79,7 @@ public class Gun : MonoBehaviour
 
         float reloadSpeed = 1f / reloadTime;
         float percent = 0;
-        while(percent < 1)
+        while (percent < 1)
         {
             percent += Time.deltaTime * reloadSpeed;
 

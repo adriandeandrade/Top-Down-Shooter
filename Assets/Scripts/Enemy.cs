@@ -26,7 +26,6 @@ public class Enemy : Entity
         {
             target = GameObject.FindObjectOfType<PlayerMotor>().transform;
             hasTarget = true;
-            
         }
 
         pathFinder = GetComponent<NavMeshAgent>();
@@ -57,17 +56,19 @@ public class Enemy : Entity
         print(currentState);
 
         float refreshRate = .25f;
-        while (hasTarget)
+        while (hasTarget && target != null)
         {
             if (currentState == State.CHASING)
             {
-                Vector3 directionToTarget = (target.transform.position - transform.position).normalized;
-                Vector3 targetPosition = target.transform.position - directionToTarget * (myCollisionRadius + targetCollisionRadius);
+                if (!dead)
+                {
+                    Vector3 directionToTarget = (target.transform.position - transform.position).normalized;
+                    Vector3 targetPosition = target.transform.position - directionToTarget * (myCollisionRadius + targetCollisionRadius);
 
-                pathFinder.SetDestination(targetPosition);
+                    pathFinder.SetDestination(targetPosition);
+                }
+                yield return new WaitForSeconds(refreshRate);
             }
-
-            yield return new WaitForSeconds(refreshRate);
         }
     }
 }

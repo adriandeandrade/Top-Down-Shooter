@@ -258,11 +258,11 @@ MonoBehaviour:
   muzzleVelocity: 35
   bulletsPerMagazine: 0
   reloadTime: 0
+  damage: 0
   fireMode: 0
-  muzzle: {fileID: 0}
+  muzzles: []
   projectile: {fileID: 0}
   bulletsLeftInMagazine: 0
-  damage: 10
 --- !u!114 &114866662569284468
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -278,9 +278,10 @@ MonoBehaviour:
   muzzleVelocity: 30
   bulletsPerMagazine: 8
   reloadTime: 0.2
+  damage: 5
   fireMode: 1
-  muzzle: {fileID: 4477108117711978}
+  muzzles:
+  - {fileID: 4477108117711978}
   projectile: {fileID: 114457783727416942, guid: d1a8c5afdca8e66419a5c7fd3d6e4f4a,
     type: 2}
   bulletsLeftInMagazine: 0
-  damage: 8
