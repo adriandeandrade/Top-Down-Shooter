@@ -12,14 +12,20 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        if(target != null)
-        {
-            target = FindObjectOfType<PlayerMotor>().gameObject;
-        }
+        
     }
 
     void LateUpdate()
     {
+        if(target == null)
+        {
+            if (GameManager.instance.playerPrefabInstance != null) target = GameManager.instance.transform.gameObject;
+            if(target == null)
+            {
+                return;
+            }
+        }
+
         Vector3 desiredPos = target.transform.position + offset;
         Vector3 smoothedPos = Vector3.SmoothDamp(transform.position, desiredPos, ref velocity, smoothTime);
         transform.position = smoothedPos;
