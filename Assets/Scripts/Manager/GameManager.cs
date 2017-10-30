@@ -92,20 +92,29 @@ public class GameManager : Singleton<GameManager>
 
     void Update()
     {
-        if (currentGameState != GameState.PAUSE) return;
-        
-        if (currentGameState == GameState.PAUSE)
+        switch(currentGameState)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                SwitchState(GameState.PAUSE);
-            }
+            case GameState.MENU:
+                break;
+            case GameState.INIT:
+                break;
+            case GameState.PLAY:
+                if(Input.GetKeyDown(KeyCode.Escape))
+                {
+                    SwitchState(GameState.PAUSE);
+                }
+                break;
+            case GameState.PAUSE:
+                break;
+            case GameState.RESUME:
+                break;
         }
     }
 
 
     public void ClearGame()
     {
+        spawnPoints.Clear();
         if (levelPrefab != null)
         {
             Destroy(levelPrefab);
@@ -129,7 +138,7 @@ public class GameManager : Singleton<GameManager>
         levelPrefab = GameObject.Instantiate(levelPrefabs[levelNumber - 1]);
         currentKeys = 0;
         currentLevel = levelNumber;
-        Invoke("FindAllSpawnPoints", 2f);
+        Invoke("FindAllSpawnPoints", 0.5f);
     }
 
     void FindAllSpawnPoints()
