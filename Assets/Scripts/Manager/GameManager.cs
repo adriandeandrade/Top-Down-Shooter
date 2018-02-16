@@ -1,28 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
-    public enum GameState { NONE, MENU, INIT, HELP, PLAY, GAMEOVER, PAUSE, RESUME }
+    public enum GameState { NONE, MENU, INIT, HELP, PLAY, GAMEOVER, PAUSE, RESUME, INTRO }
     public GameState currentGameState = GameState.NONE;
 
     public GameObject uiMenu;
     public GameObject uiPlay;
     public GameObject uiPause;
     public GameObject uiHelp;
-    public GameObject[] levelPrefabs;
-    public List<GameObject> spawnPoints = new List<GameObject>();
 
     public GameObject playerPrefab;
     public GameObject playerPrefabInstance;
 
-    private GameObject levelPrefab;
-
-    public LevelManager levelManager;
-
     public int currentKeys;
     public int currentLevel;
+
+    public SceneFader sceneFader;
 
     void Start()
     {
@@ -41,16 +38,20 @@ public class GameManager : Singleton<GameManager>
         switch (currentGameState)
         {
             case GameState.MENU:
+                //LoadLevel("Menu");
                 uiMenu.SetActive(true);
                 break;
             case GameState.INIT:
-                ClearGame();
-                playerPrefabInstance = GameObject.Instantiate(playerPrefab);
-                playerPrefabInstance.transform.position = Vector3.zero + (Vector3.up * 2);
-                currentKeys = 0;
-                currentLevel = 1;
-                LoadLevel(1);
+                LoadLevel("Level01");
+                //ClearGame();
+                //playerPrefabInstance = GameObject.Instantiate(playerPrefab);
+                //currentKeys = 0;
+                //currentLevel = 1;
+                //LoadLevel(1);
+                //playerPrefabInstance.transform.position = levelManager.currentLevel.playerSpawn.position;
                 SwitchState(GameState.PLAY);
+                break;
+            case GameState.INTRO:
                 break;
             case GameState.HELP:
                 uiHelp.SetActive(false);
@@ -78,7 +79,11 @@ public class GameManager : Singleton<GameManager>
             case GameState.HELP:
                 uiHelp.SetActive(false);
                 break;
+
+            case GameState.INTRO:
+                break;
             case GameState.PLAY:
+                ClearGame();
                 uiPlay.SetActive(false);
                 break;
             case GameState.PAUSE:
@@ -92,17 +97,20 @@ public class GameManager : Singleton<GameManager>
 
     void Update()
     {
-        switch(currentGameState)
+        switch (currentGameState)
         {
             case GameState.MENU:
                 break;
             case GameState.INIT:
                 break;
+            case GameState.INTRO:
+                break;
             case GameState.PLAY:
-                if(Input.GetKeyDown(KeyCode.Escape))
+                if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     SwitchState(GameState.PAUSE);
                 }
+                
                 break;
             case GameState.PAUSE:
                 break;
@@ -111,15 +119,8 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-
     public void ClearGame()
     {
-        spawnPoints.Clear();
-        if (levelPrefab != null)
-        {
-            Destroy(levelPrefab);
-        }
-
         if (playerPrefabInstance != null)
         {
             Destroy(playerPrefabInstance);
@@ -132,28 +133,10 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    void LoadLevel(int levelNumber)
+    void LoadLevel(string levelName)
     {
-        if (levelPrefab != null) Destroy(levelPrefab);
-        levelPrefab = GameObject.Instantiate(levelPrefabs[levelNumber - 1]);
         currentKeys = 0;
-        currentLevel = levelNumber;
-        Invoke("FindAllSpawnPoints", 0.5f);
-    }
-
-    void FindAllSpawnPoints()
-    {
-        foreach (GameObject spawnPoint in GameObject.FindGameObjectsWithTag("Spawnpoint"))
-        {
-            spawnPoints.Add(spawnPoint);
-        }
-        StartEnemies();
-    }
-
-    void StartEnemies()
-    {
-        levelManager = GetComponent<LevelManager>();
-        levelManager.NextWave();
+        sceneFader.FadeTo(levelName);
     }
 
     public void CollectKey()
@@ -184,7 +167,6 @@ public class GameManager : Singleton<GameManager>
 
     public void PressMenu()
     {
-        ClearGame();
         SwitchState(GameState.MENU);
     }
 }

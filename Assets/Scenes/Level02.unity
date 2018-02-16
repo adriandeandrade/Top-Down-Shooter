@@ -43,7 +43,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -88,7 +88,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-  m_LightingDataAsset: {fileID: 112000002, guid: 55945225f71232f4982d193d738e3571,
+  m_LightingDataAsset: {fileID: 112000002, guid: e70ce772dbaae84469fec9d4388281f2,
     type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -112,7 +112,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 3c87b78cb2baba043a5fea4293b08abf, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: dc776c5c6fededa4e812de490177dec1, type: 2}
 --- !u!1 &82744465
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,6 +582,48 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 335553478}
+--- !u!1001 &512875144
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4165648472562572, guid: d36c1af6d1f69384a832046cf71b4b4c, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4165648472562572, guid: d36c1af6d1f69384a832046cf71b4b4c, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4165648472562572, guid: d36c1af6d1f69384a832046cf71b4b4c, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4165648472562572, guid: d36c1af6d1f69384a832046cf71b4b4c, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4165648472562572, guid: d36c1af6d1f69384a832046cf71b4b4c, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4165648472562572, guid: d36c1af6d1f69384a832046cf71b4b4c, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4165648472562572, guid: d36c1af6d1f69384a832046cf71b4b4c, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4165648472562572, guid: d36c1af6d1f69384a832046cf71b4b4c, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d36c1af6d1f69384a832046cf71b4b4c, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &530365941
 GameObject:
   m_ObjectHideFlags: 0
@@ -1989,7 +2031,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1697594714}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 516.5, y: 290.5, z: 0}
+  m_LocalPosition: {x: 576, y: 324, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1120663711}
@@ -2069,7 +2111,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1728537490}
-  - component: {fileID: 1728537491}
   - component: {fileID: 1728537492}
   m_Layer: 0
   m_Name: GAME MANAGER
@@ -2091,26 +2132,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1728537491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1728537489}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a30a8557665c5bf46a1b79916e10e052, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentWave:
-    timeBetweenWaves: 5
-    amountOfEnemiesToSpawn: 10
-    timeBetweenSpawns: 3
-    typesOfEnemy:
-    - {fileID: 114964063365055480, guid: 9fe2c7b7b72b9fc4fbfed8ef506faaa4, type: 2}
-    - {fileID: 114044129228745308, guid: a538e8f23338d4a4ea41bb80cd5811e5, type: 2}
-    - {fileID: 114509943035194084, guid: 76da7fc2a9bad9e49932f484d49d7033, type: 2}
-  amountOfKeysInLevel: 5
 --- !u!114 &1728537492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2127,16 +2148,12 @@ MonoBehaviour:
   uiPlay: {fileID: 1094283467}
   uiPause: {fileID: 623590152}
   uiHelp: {fileID: 1885885190}
-  levelPrefabs:
-  - {fileID: 1522097173369602, guid: 0e4847daf0fd6a340aa89fb39fc97157, type: 2}
-  - {fileID: 1158139242613892, guid: d36c1af6d1f69384a832046cf71b4b4c, type: 2}
-  spawnPoints: []
   playerPrefab: {fileID: 1137980942809448, guid: 6c78105358df2dc4f9a2e58eeb19c655,
     type: 2}
   playerPrefabInstance: {fileID: 0}
-  levelManager: {fileID: 0}
   currentKeys: 0
   currentLevel: 0
+  sceneFader: {fileID: 0}
 --- !u!1 &1885885190
 GameObject:
   m_ObjectHideFlags: 0

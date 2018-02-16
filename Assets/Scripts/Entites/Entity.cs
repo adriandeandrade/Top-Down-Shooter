@@ -11,6 +11,7 @@ public class Entity : MonoBehaviour, IDamageable
 
     protected virtual void Start()
     {
+        dead = false;
         health = startingHealth;
     }
 

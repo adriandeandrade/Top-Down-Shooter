@@ -6,56 +6,70 @@ public class LevelManager : MonoBehaviour
 {
     [Header("Spawner Variables")]
     [Tooltip("This gets changed depending on what level the game is on.")]
-    public Wave currentWave;
+    public Level currentLevel;
     int currentWaveNumber;
     int enemiesAlive;
     int enemiesToSpawn;
     float nextSpawnTime;
-    bool disabled;
-
-    [Header("Key System Variables")]
-    public int amountOfKeysInLevel;
+    [HideInInspector]
+    public bool disabled;
 
     void Start()
     {
         //NextWave();
+        disabled = true;
     }
 
     void Update()
     {
-        if (!disabled)
+        if (disabled)
         {
-            if (enemiesToSpawn > 0 && Time.time > nextSpawnTime)
-            {
-                enemiesToSpawn--;
-                nextSpawnTime = Time.time + currentWave.timeBetweenSpawns;
-                SpawnEnemy();
-            }
-            
-            if(GameManager.instance.currentKeys >= amountOfKeysInLevel && enemiesToSpawn == 0)
-            {
-                //level over
-                disabled = true;
-            }
+            return;
+        }
 
+
+
+        if (enemiesToSpawn > 0 && Time.time > nextSpawnTime)
+        {
+            enemiesToSpawn--;
+            nextSpawnTime = Time.time + currentLevel.timeBetweenSpawns;
+            StartCoroutine(SpawnEnemy());
+        }
+
+        if (GameManager.instance.currentKeys >= currentLevel.amountOfKeys && enemiesToSpawn == 0)
+        {
+            //level over
+            disabled = true;
         }
     }
 
-    void SpawnEnemy()
+    IEnumerator SpawnEnemy()
     {
-        if(GameManager.instance.currentGameState == GameManager.GameState.PLAY)
-        {
-            int spawnPointIndex = Random.Range(0, GameManager.instance.spawnPoints.Count);
-            Debug.Log(spawnPointIndex);
-            Vector3 spawnPoint = GameManager.instance.spawnPoints[spawnPointIndex].gameObject.transform.position;
-            Enemy spawnedEnemy = Instantiate(PickEnemyToSpawn(), spawnPoint, Quaternion.identity) as Enemy;
-            spawnedEnemy.OnDeath += OnEnemyDeath;
-        }
+        int spawnPointIndex = Random.Range(0, currentLevel.spawnPoints.Count);
+        Vector3 spawnPoint = currentLevel.spawnPoints[spawnPointIndex].transform.position;
+        Enemy enemyInstance = Instantiate(PickEnemyToSpawn(), spawnPoint, Quaternion.identity);
+        enemyInstance.FindTarget();
+        enemyInstance.OnDeath += OnEnemyDeath;
+        yield return null;
     }
+
+
+    //void SpawnEnemy()
+    //{
+        
+
+    //    //if(GameManager.instance.currentGameState == GameManager.GameState.PLAY)
+    //    //{
+    //    //    int spawnPointIndex = Random.Range(0, GameManager.instance.spawnPoints.Count);
+    //    //    Vector3 spawnPoint = GameManager.instance.spawnPoints[spawnPointIndex].gameObject.transform.position;
+    //    //    Enemy spawnedEnemy = Instantiate(PickEnemyToSpawn(), spawnPoint, Quaternion.identity) as Enemy;
+    //    //    spawnedEnemy.OnDeath += OnEnemyDeath;
+    //    //}
+    //}
 
     Enemy PickEnemyToSpawn()
     {
-        return currentWave.typesOfEnemy[Random.Range(0, 3)];
+        return currentLevel.typesOfEnemy[Random.Range(0, currentLevel.typesOfEnemy.Length)];
     }
 
     void OnEnemyDeath()
@@ -71,17 +85,20 @@ public class LevelManager : MonoBehaviour
     {
         currentWaveNumber++;
         print("Wave: " + currentWaveNumber);
-        enemiesToSpawn = currentWave.amountOfEnemiesToSpawn;
+        enemiesToSpawn = currentLevel.amountOfEnemiesToSpawn;
         enemiesAlive = enemiesToSpawn;
     }
 
     [System.Serializable]
-    public class Wave
+    public class Level
     {
         public int timeBetweenWaves;
         public int amountOfEnemiesToSpawn;
+        public int amountOfKeys;
         public float timeBetweenSpawns;
+        public Transform playerSpawn;
         public Enemy[] typesOfEnemy;
+        public List<Transform> spawnPoints = new List<Transform>();
 
     }
 }

@@ -14,24 +14,23 @@ public class Enemy : Entity
     public enum State { IDLE, CHASING, ATTACKING };
 
     State currentState;
-    float refreshRate = 0.25f;
     bool hasTarget;
 
+    [SerializeField]
+    GameObject target;
+
     NavMeshAgent pathFinder;
-    [SerializeField] GameObject target;
+
+    private void Awake()
+    {
+        pathFinder = GetComponent<NavMeshAgent>();
+    }
 
     protected override void Start()
     {
         base.Start();
-        pathFinder = GetComponent<NavMeshAgent>();
         SetEnemyCharacteristics();
-
-        if (target != null)
-        {
-            currentState = State.CHASING;
-            StartCoroutine(UpdatePath());
-            hasTarget = true;
-        }
+        currentState = State.IDLE;
     }
 
     public void SetEnemyCharacteristics()
@@ -54,6 +53,14 @@ public class Enemy : Entity
         return Vector3.zero;
     }
 
+    private void Update()
+    {
+        if(HasTarget())
+        {
+            StartCoroutine(UpdatePath());
+        }
+    }
+
     float GetDistanceToPlayer()
     {
         return Vector3.Distance(transform.position, target.transform.position);
@@ -74,20 +81,25 @@ public class Enemy : Entity
         return false;
     }
 
+    public void FindTarget()
+    {
+        if (!hasTarget)
+        {
+            target = FindObjectOfType<PlayerController>().gameObject;
+        }
+        else
+        {
+            target = null;
+        }
+    }
+
     IEnumerator UpdatePath()
     {
-        while (target != null)
+        float refreshRate = 1f;
+        if(HasTarget())
         {
-            if (currentState == State.CHASING)
-            {
-                Vector3 directionToTarget = (target.transform.position - transform.position).normalized;
-                Vector3 targetPosition = target.transform.position - directionToTarget;
-                if (!dead)
-                {
-                    pathFinder.SetDestination(targetPosition);
-                }
-            }
-            yield return new WaitForSeconds(refreshRate);
+            pathFinder.SetDestination(target.transform.position);
         }
+        yield return new WaitForSeconds(refreshRate);
     }
 }

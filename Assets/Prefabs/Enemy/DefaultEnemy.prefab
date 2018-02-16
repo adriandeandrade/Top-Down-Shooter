@@ -99,6 +99,7 @@ MonoBehaviour:
   startingHealth: 10
   speed: 4
   damage: 10
+  maxAttackRange: 0
   target: {fileID: 0}
 --- !u!136 &136099952813943652
 CapsuleCollider:
